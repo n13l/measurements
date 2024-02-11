@@ -1,3 +1,7 @@
+|`PROJECT`      |`AUTHOR`                                     |`DATE`          |
+|---------------|:-------------------------------------------:|:--------------:|
+| MEASUREMENTS  |               Daniel Kubec `<niel@rtfm.cz>` | June 2013      |
+
 # Network Measurements and Statistical Analysis
 
 This comprehensive system ensures that each measurements enable immediate and actionable insights, allowing users to discern the implications of the data and how it can be applied to enhance network security, performance, or compliance.
