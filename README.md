@@ -234,7 +234,12 @@ As quantum computing continues to evolve and advance, a large quantum computer w
 
 To keep your in-transit data resilient, Key Protect has introduced the ability to use a quantum safe enabled TLS connection to ensure that your data is secure during the key exchange process.
 
-[Post-Quantum Cryptography ](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography)
+[(PQC) Post-Quantum Cryptography](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography)
+
+[(OQS) The Open Quantum Safe](https://openquantumsafe.org/)
+
+[(IBM) Key Protect Quantum Safe](https://cloud.ibm.com/docs/key-protect?topic=key-protect-quantum-safe-cryptography-tls-introduction)
+
 
 ### TLS_QUANTUM_HYBRID
 
