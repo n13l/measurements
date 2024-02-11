@@ -1,12 +1,16 @@
 # Network Measurements and Statistical Analysis
 
+This comprehensive system ensures that each measurements enable immediate and actionable insights, allowing users to discern the implications of the data and how it can be applied to enhance network security, performance, or compliance.
+
 ## Abstract
 
 This document delves into Network Security Measurements and Statistical Analysis, establishing a framework for the systemic classification and precise measurement of network endpoints and protocol-specific sessions. It introduces a nuanced approach where each measurement type can be configured for association with specific endpoints, identified by IP address, public key, or reliable fingerprinting of network endpoints.
 
 Furthermore, it categorizes protocols, their specific versions, and the cryptographic algorithms they utilize into distinct security levels ranging from 'insecure', 'vulnerable', 'weak', 'info' and 'recommended' and assesses their compliance with standards such as NIST (National Institute of Standards and Technology). This comprehensive system ensures that each measurements enable immediate and actionable insights, allowing end-users to discern the implications of the data and how it can be applied to enhance network security, performance, or compliance. Through this approach, measurements transcend their role as mere data points, becoming invaluable tools for diagnosing, understanding, and rectifying network-related challenges effectively.
 
-## Endpoint
+The techniques used can vary significantly in their approach and the depth of information they can uncover. These techniques include passive probing (with knowledge of channel secrets), passive scanning (without knowledge of channel secrets), and active scanning. The total number of measurements and related counters available from these techniques depends greatly on the method employed, as each has different capabilities and access levels to the network data.
+
+## Endpoint Identity
 
 - [IP Address Association] Each measurement can be directly linked to an IP address, serving as a fundamental identifier for network endpoints. This association is crucial for tracking and analyzing network traffic and behavior on a per-device basis, providing a clear and straightforward means of identifying the source and destination of network communications.
 
@@ -63,6 +67,11 @@ The Transport Layer Security Protocol
 - [TLS_NEXT_PROTOCOL_NEGOTIATION]
 - [TLS_APPLICATION_LAYER_PROTOCOL_NEGOTIATION]
 - [TLS_COMPLIANCE_NIST]
+- [TLS_QUANTUM_SAFE]
+- [TLS_QUANTUM_HYBRID]
+
+### TLS Vulnerability Measurements
+
 - [TLS_TRIPLE_HANDSHAKE_ATTACK]
 - [TLS_DOWNGRADE_ATTACK]
 - [TLS_POODLE_ATTACK]
@@ -70,6 +79,7 @@ The Transport Layer Security Protocol
 - [TLS_BEAST_ATTACK]
 - [TLS_CRIME_ATTACK]
 - [TLS_LUCKY13_ATTACK]
+- [TLS_RACCOON_ATTACK]
 
 ### TLS Derived counters
 
@@ -100,6 +110,30 @@ The Transport Layer Security Protocol
 - [TLS_DECRYPTION_MIN_SPEED_TOTAL]
 - [TLS_DECRYPTION_MIN_SPEED_PER_CIPHERSUITE]
 - [TLS_APPLICATION_LAYER_NEGOTIATION_PER_PROTOCOL]
+
+### TLS_INSECURE_PROTOCOL
+
+TLS (Transport Layer Security) protocols older than 1.2 and 1.3 are considered insecure for several key reasons, each of which relates to the evolution of internet security standards and the discovery of vulnerabilities in older versions of the protocol.
+
+TLS 1.0 and 1.1 rely on cryptographic algorithms and standards that are no longer considered secure by today's security community. This includes the use of weaker hash functions (like MD5 and SHA-1) and encryption algorithms (such as DES and 3DES) that are vulnerable to brute force attacks and other cryptographic attacks.
+
+The insecurity of TLS versions older than 1.2 stems from their use of vulnerable cryptographic algorithms, susceptibility to specific attacks, and lack of support for stronger, more secure cipher suites. In contrast, TLS 1.2 and 1.3 provide enhancements that address these weaknesses, including mandatory support for PFS, stronger cryptographic algorithms, and a more secure protocol design. Consequently, organizations and service providers are encouraged to disable TLS 1.0 and 1.1 in favor of TLS 1.2 and 1.3 to ensure the security and privacy of data in transit.
+
+
+### TLS_INSECURE_CIPHERSUITE
+
+Insecure cipher suites represent a critical security vulnerability because they rely on cryptographic algorithms that are either outdated, have known vulnerabilities, or both. These vulnerabilities can be exploited by attackers to decrypt, modify, or intercept data that is supposed to be secured. The measurement of an insecure cipher suite not only indicates the presence of such a vulnerability but can also explain the exact reasons why it's considered insecure. 
+
+Here's an example to illustrate this:
+[TLS_DH_anon_WITH_SEED_CBC_SHA](https://ciphersuite.info/cs/TLS_DH_anon_WITH_SEED_CBC_SHA/)
+
+### TLS_WEAK_CIPHERSUITE
+
+A weak cipher suite may not have direct vulnerabilities like those found in insecure cipher suites with known exploits, but its security can be generally weak, making it susceptible under certain conditions or when combined with other security weaknesses. This weakness often stems from using cryptographic algorithms or protocols that are outdated, have theoretical vulnerabilities, or rely on insufficient key lengths. Here's an example to illustrate such a scenario:
+
+Here's an example to illustrate this:
+[TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256](https://ciphersuite.info/cs/TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256/)
+
 
 ### TLS_EXTENDED_MASTER_SECRET
 
@@ -181,3 +215,26 @@ It is a new variant of Serge Vaudenay's padding oracle attack that was previousl
 The researchers only examined Free Software implementations of TLS and found all examined products to be potentially vulnerable to the attack. They have tested their attacks successfully against OpenSSL and GnuTLS. Because the researchers applied responsible disclosure and worked with the software vendors, some software updates to mitigate the attacks were available at the time of publication.[2]
 
 Martin R. Albrecht and Paterson have since demonstrated a variant Lucky Thirteen attack against Amazon's s2n TLS implementation, even though s2n includes countermeasures intended to prevent timing attacks.[4]
+
+### TLS_RACCOON_ATTACK
+
+Raccoon is a timing vulnerability in the TLS specification that affects HTTPS and other services that rely on SSL and TLS. These protocols allow everyone on the Internet to browse the web, use email, shop online, and send instant messages without third-parties being able to read the communication.
+
+Raccoon allows attackers under certain conditions to break the encryption and read sensitive communications. The vulnerability is really hard to exploit and relies on very precise timing measurements and on a specific server configuration to be exploitable.
+
+[RACCOON_ATTACK](https://raccoon-attack.com/)
+
+### TLS_QUANTUM_SAFE
+
+As quantum computing continues to evolve and advance, a large quantum computer will be able to run a "SHOR" algorithm that can break the current TLS communication algorithms (RSA/ECC) in a matter of minutes. While large quantum computers are not available today, any TLS data-in-transit that has been snooped and stored can be breached when these large quantum computers are made available. Data has a long shelf life so it is critical that Key Protect supports quantum safe cryptographic algorithms to secure TLS communications.
+
+To keep your in-transit data resilient, Key Protect has introduced the ability to use a quantum safe enabled TLS connection to ensure that your data is secure during the key exchange process.
+
+[Post-Quantum Cryptography ](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography)
+
+### TLS_QUANTUM_HYBRID
+
+Hybrid mode uses a combination of a quantum safe algorithm and classic key exchange algorithms to protect your data while in transit. The classic elliptic algorithm and the quantum safe algorithm are used in a key exchange mechanism to cryptographically protect data. 
+
+[Post-Quantum Cryptography ](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography)
+
