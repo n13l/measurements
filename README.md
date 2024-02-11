@@ -10,7 +10,7 @@ Furthermore, it categorizes protocols, their specific versions, and the cryptogr
 
 - [IP Address Association] Each measurement can be directly linked to an IP address, serving as a fundamental identifier for network endpoints. This association is crucial for tracking and analyzing network traffic and behavior on a per-device basis, providing a clear and straightforward means of identifying the source and destination of network communications.
 
-- [Public Key Association]  For enhanced security and identification, measurements can also be associated with stable public keys. This method leverages cryptographic keys that are tied to specific endpoints, offering a higher level of security by ensuring that the identification is not only unique but also secured against impersonation or spoofing attacks. The use of stable public keys is particularly relevant in environments where authentication and non-repudiation are paramount.
+- [Public Key Association]  For enhanced identification, measurements can also be associated with stable public keys. This method leverages cryptographic keys that are tied to specific endpoints, offering the identification. The use of stable keys is particularly relevant in environments and contexts where authentication and non-repudiation are paramount.
 
 - [Fingerprint Association] Beyond IP addresses and cryptographic keys, the document introduces the concept of associating measurements with reliable fingerprints. These fingerprints are generated through sophisticated methods that analyze various characteristics of an endpoint, creating a unique identifier that goes beyond conventional methods. This could involve analyzing hardware configurations, software signatures, or network behavior patterns to generate a fingerprint that is not only unique but also resistant to changes or spoofing attempts.
 
@@ -25,7 +25,7 @@ Furthermore, it categorizes protocols, their specific versions, and the cryptogr
 
 ### X509 Measurements
 
-International Telecommunication Union standard defining the format of public key certificates.
+International Telecommunication Union standard format of public key certificates.
 
 - [X509_TRUSTED]
 - [X509_SELF_SIGNED]
@@ -39,6 +39,11 @@ International Telecommunication Union standard defining the format of public key
 - [X509_OCSP]
 - [X509_OCSP_STAPLING]
 
+### X509 Derived counters
+
+- [X509_VERIFICATION_REQUESTS]
+- [X509_VERIFIED]
+
 ### TLS Measurements
 
 The Transport Layer Security Protocol
@@ -51,25 +56,65 @@ The Transport Layer Security Protocol
 - [TLS_RECOMMENDED_CIPHERSUITE]
 - [TLS_EXTENDED_MASTER_SECRET]
 - [TLS_MUTUAL AUTHENTICATION]
+- [TLS_NO_AUTHENTICATION]
+- [TLS_NO_ENCRYPTION]
+- [TLS_FORWARD_SECRECY]
 - [TLS_PERFECT_FORWARD_SECRECY]
 - [TLS_NEXT_PROTOCOL_NEGOTIATION]
 - [TLS_APPLICATION_LAYER_PROTOCOL_NEGOTIATION]
 - [TLS_COMPLIANCE_NIST]
 - [TLS_TRIPLE_HANDSHAKE_ATTACK]
 - [TLS_DOWNGRADE_ATTACK]
-- [TLS_POODLE]
-- [TLS_FREAK]
-- [TLS_BEAST]
-- [TLS_CRIME]
-- [TLS_LUCKY]
-- [TLS_HEARTBLEED]
--
+- [TLS_POODLE_ATTACK]
+- [TLS_FREAK_ATTACK]
+- [TLS_BEAST_ATTACK]
+- [TLS_CRIME_ATTACK]
+- [TLS_LUCKY13_ATTACK]
+
+### TLS Derived counters
+
+- [TLS_RECORD_PLAINTEXT]
+- [TLS_RECORD_ENCRYPTED]
+- [TLS_RECORD_DECRYPTED]
+- [TLS_HANDSHAKE_FULL]
+- [TLS_HANDSHAKE_ABBREVIATED]
+- [TLS_HANDSHAKE_NEGOTIATED]
+- [TLS_HANDSHAKE_VERIFIED]
+- [TLS_CIPHERSUITES_CLIENT_SUPPORT]
+- [TLS_CIPHERSUITES_SERVER_SUPPORT]
+- [TLS_CIPHERSUITES_NEGOTIATED]
+- [TLS_AUTHENTICATION_CLIENT_SUPPORT]
+- [TLS_AUTHENTICATION_SERVER_SUPPORT]
+- [TLS_AUTHENTICATION_NEGOTIATED]
+- [TLS_KEY_EXCHANGE_CLIENT_SUPPORT]
+- [TLS_KEY_EXCHANGE_SERVER_SUPPORT]
+- [TLS_KEY_EXCHANGE_NEGOTIATED]
+- [TLS_DECRYPTION_RATIO_TOTAL]
+- [TLS_DECRYPTION_RATIO_PER_CIPHERSUITE]
+- [TLS_DECRYPTION_AVG_SPEED_TOTAL]
+- [TLS_DECRYPTION_AVG_SPEED_PER_CIPHERSUITE]
+- [TLS_DECRYPTION_MEDIAN_SPEED_TOTAL]
+- [TLS_DECRYPTION_MEDIAN_SPEED_PER_CIPHERSUITE]
+- [TLS_DECRYPTION_MAX_SPEED_TOTAL]
+- [TLS_DECRYPTION_MAX_SPEED_PER_CIPHERSUITE]
+- [TLS_DECRYPTION_MIN_SPEED_TOTAL]
+- [TLS_DECRYPTION_MIN_SPEED_PER_CIPHERSUITE]
+- [TLS_APPLICATION_LAYER_NEGOTIATION_PER_PROTOCOL]
+
+### TLS_EXTENDED_MASTER_SECRET
+
+The Extended Master Secret Extension modifies the way the master secret is calculated. Instead of using just the pre-master secret and random values, it includes a session hash that encompasses all the handshake messages sent and received up to the point of the master secret calculation. This results in a unique master secret for each session, even if the same pre-master secret is reused.
+
+In summary, the TLS Extended Master Secret Extension in TLS 1.2 enhances the security of TLS sessions by ensuring that the master secret and by extension, the session keys are uniquely tied to the complete handshake history. This makes it more difficult for attackers to compromise TLS sessions through MITM, triple handshake, renegotiation, and session resumption attacks.
+
+[RFC-7627](https://datatracker.ietf.org/doc/html/rfc7627)
+Transport Layer Security Session Hash and Extended Master Secret Extension.
 
 ### TLS_TRIPLE_HANDSHAKE_ATTACK
 
 The Triple Handshake Attack is a sophisticated form of Man-in-the-Middle (MITM) attack specifically targeting the TLS protocol. In this attack, the attacker manipulates the handshake process between the client and the server in such a manner that both parties end up deriving the same master secret despite not directly communicating with each other in a secure manner. This attack exploits the TLS handshake mechanism's lack of binding between the master secret and the specific attributes of the session, such as the server's identity.
 
-Compromising Additional Authentication: What makes the Triple Handshake Attack particularly dangerous is that it can also compromise additional authentication mechanisms layered on top of TLS. Since the master secret is used to derive the session keys for encryption and MAC (Message Authentication Code) operations, if an attacker can manipulate the process to derive the same master secret, they can potentially bypass these additional authentication checks. The attack essentially breaks the assumed binding between the session's security properties and its unique master secret, making even strong forms of authentication vulnerable under certain conditions.
+Compromising Additional Authentication: What makes the Triple Handshake Attack particularly dangerous is that it can also compromise additional authentication mechanisms layered on top of TLS. Furthermore, it can create vulnerability for any side-channel authentication that is based on the master secret. Since the master secret is used to derive the session keys, if an attacker can manipulate the process to derive the same master secret, they can potentially bypass these additional authentication checks. The attack essentially breaks the assumed binding between the session's security properties and its unique master secret, making even strong forms of authentication vulnerable under certain conditions.
 
 ### TLS_DOWNGRADE_ATTACK
 
@@ -88,28 +133,51 @@ cryptographic security of connections.  Also, handshake errors due to
 network glitches could similarly be misinterpreted as interaction
 with a legacy server and result in a protocol downgrade.
 
-Signaling Cipher Suite Value (SCSV) that prevents protocol downgrade attacks
-[RFC-7507](ihttps://datatracker.ietf.org/doc/html/rfc7507) 
+[RFC-7507](https://datatracker.ietf.org/doc/html/rfc7507)
+Signaling Cipher Suite Value (SCSV) that prevents protocol downgrade attacks.
 
-### TLS_EXTENDED_MASTER_SECRET
 
-The Extended Master Secret Extension modifies the way the master secret is calculated. Instead of using just the pre-master secret and random values, it includes a session hash that encompasses all the handshake messages sent and received up to the point of the master secret calculation. This results in a unique master secret for each session, even if the same pre-master secret is reused.
+### TLS_POODLE_ATTACK
 
-In summary, the TLS Extended Master Secret Extension in TLS 1.2 enhances the security of TLS sessions by ensuring that the master secret—and by extension, the session keys—are uniquely tied to the complete handshake history. This makes it more difficult for attackers to compromise TLS sessions through MITM, triple handshake, renegotiation, and session resumption attacks.
+POODLE (which stands for "Padding Oracle On Downgraded Legacy Encryption") is a security vulnerability which takes advantage of the fallback to SSL 3.0.[1][2][3] If attackers successfully exploit this vulnerability, on average, they only need to make 256 SSL 3.0 requests to reveal one byte of encrypted messages. Bodo Möller, Thai Duong and Krzysztof Kotowicz from the Google Security Team discovered this vulnerability; they disclosed the vulnerability publicly on October 14, 2014 (despite the paper being dated "September 2014" [1]).[4] On December 8, 2014 a variation of the POODLE vulnerability that affected TLS was announced.[5]
 
-### TLS Derived counters
+The CVE-ID associated with the original POODLE attack is CVE-2014-3566. F5 Networks filed for CVE-2014-8730 as well, see POODLE attack against TLS section below.
 
-- [TLS_RECORD_PLAINTEXT]
-- [TLS_RECORD_ENCRYPTED]
-- [TLS_RECORD_DECRYPTED]
-- [TLS_HANDSHAKE_FULL]
-- [TLS_HANDSHAKE_ABBREVIATED]
-- [TLS_HANDSHAKE_NEGOTIATED]
-- [TLS_HANDSHAKE_VERIFIED]
-- [TLS_CIPHERSUITES_SUPPORTED]
-- [TLS_CIPHERSUITES_NEGOTIATED]
-- [TLS_AUTHENTICATION_SUPPORTED]
-- [TLS_AUTHENTICATION_NEGOTIATED]
-- [TLS_KEY_EXCHANGE_SUPPORTED]
-- [TLS_KEY_EXCHANGE_NEGOTIATED]
+Prevention:
 
+The authors of the paper on POODLE attacks encourage client and server implementation of TLS_FALLBACK_SCSV,[6] which will make downgrade attacks impossible.
+
+
+### TLS_FREAK_ATTACK
+
+The FREAK attack is a SSL/TLS vulnerability that allows attackers to intercept HTTPS connections between vulnerable clients and servers and force them to use 'export-grade' cryptography, which can then be decrypted or altered. Websites that support RSA export cipher suites are at risk to having HTTPS connections intercepted.
+
+
+### TLS_BEAST_ATTACK
+
+Browser Exploit Against SSL/TLS (BEAST) is an attack that exploits a vulnerability in the Transport-Layer Security (TLS) 1.0 and older SSL protocols, using the cipher block chaining (CBC) mode encryption. It allows attackers to capture and decrypt HTTPS client-server sessions and obtain authentication tokens. It combines a man-in-the-middle attack (MitM), record splitting, and chosen boundary attack.
+
+The theoretical vulnerability was described by Phillip Rogaway as early as 2002, and a proof of concept was demonstrated in 2011 by security researchers Thai Duong and Juliano Rizzo. The BEAST attack is similar to protocol downgrade attacks such as POODLE in that it also uses a MITM approach and exploits vulnerabilities in CBC. 
+
+
+### TLS_CRIME_ATTACK
+
+Compression Ratio Info-leak Made Easy (CRIME) is a security exploit against secret web cookies over connections using the HTTPS and SPDY protocols that also use data compression. When used to recover the content of secret authentication cookies, it allows an attacker to perform session hijacking on an authenticated web session, allowing the launching of further attacks.
+
+CRIME is a client-side attack, but the server can protect the client by refusing to use the feature combinations which can be attacked. For CRIME, the weakness is Deflate compression. This alert is issued if the server accepts Deflate compression.
+
+Remediation
+CRIME can be defeated by preventing the use of compression, either at the client end, by the browser disabling the compression of HTTPS requests, or by the website preventing the use of data compression on such transactions using the protocol negotiation features of the TLS protocol. As detailed in The Transport Layer Security (TLS) Protocol Version 1.2, the client sends a list of compression algorithms in its ClientHello message, and the server picks one of them and sends it back in its ServerHello message. The server can only choose a compression method the client has offered, so if the client only offers 'none' (no compression), the data will not be compressed. Similarly, since 'no compression' must be allowed by all TLS clients, a server can always refuse to use compression.
+
+### TLS_LUCKY13_ATTACK
+
+A Lucky Thirteen attack is a cryptographic timing attack against implementations of the Transport Layer Security (TLS) protocol that use the CBC mode of operation, first reported in February 2013 by its developers Nadhem J. AlFardan and Kenny Paterson of the Information Security Group at Royal Holloway, University of London.[1][2]
+
+Attack
+It is a new variant of Serge Vaudenay's padding oracle attack that was previously thought to have been fixed, that uses a timing side-channel attack against the message authentication code (MAC) check stage in the TLS algorithm to break the algorithm in a way that was not fixed by previous attempts to mitigate Vaudenay's attack.[3]
+
+"In this sense, the attacks do not pose a significant danger to ordinary users of TLS in their current form. However, it is a truism that attacks only get better with time, and we cannot anticipate what improvements to our attacks, or entirely new attacks, may yet be discovered." — Nadhem J. AlFardan and Kenny Paterson[1]
+
+The researchers only examined Free Software implementations of TLS and found all examined products to be potentially vulnerable to the attack. They have tested their attacks successfully against OpenSSL and GnuTLS. Because the researchers applied responsible disclosure and worked with the software vendors, some software updates to mitigate the attacks were available at the time of publication.[2]
+
+Martin R. Albrecht and Paterson have since demonstrated a variant Lucky Thirteen attack against Amazon's s2n TLS implementation, even though s2n includes countermeasures intended to prevent timing attacks.[4]
