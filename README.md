@@ -4,7 +4,7 @@
 
 This document delves into Network Security Measurements and Statistical Analysis, establishing a framework for the systemic classification and precise measurement of network endpoints and protocol-specific sessions. It introduces a nuanced approach where each measurement type can be configured for association with specific endpoints, identified by IP address, public key, or reliable fingerprinting of network endpoints.
 
-Furthermore, it categorizes protocols, their specific versions, and the cryptographic algorithms they utilize into distinct security levels ranging from 'insecure', 'vulnerable', 'weak', 'info' and 'recommended' and assesses their compliance with standards such as NIST (National Institute of Standards and Technology). This comprehensive system ensures that each measurement possesses a uniform and unique identification, based on type, endpoint, and additional data, enabling a detailed evaluation of security postures and adherence to cybersecurity best practices.
+Furthermore, it categorizes protocols, their specific versions, and the cryptographic algorithms they utilize into distinct security levels ranging from 'insecure', 'vulnerable', 'weak', 'info' and 'recommended' and assesses their compliance with standards such as NIST (National Institute of Standards and Technology). This comprehensive system ensures that each measurements enable immediate and actionable insights, allowing end-users to discern the implications of the data and how it can be applied to enhance network security, performance, or compliance. Through this approach, measurements transcend their role as mere data points, becoming invaluable tools for diagnosing, understanding, and rectifying network-related challenges effectively.
 
 ## Endpoint
 
